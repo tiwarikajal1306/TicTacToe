@@ -1,6 +1,7 @@
-#!/bin/bash -x
 echo "Welcome To TicTacToe"
 NUM_OF_CELLS=9
+computerSymbol1=X
+computerSymbol2=O
 #variables
 declare -a board
 
@@ -30,4 +31,33 @@ function toss()
 	fi
 }
 
-toss
+
+function chooseLetter()
+{
+
+	toss
+	if [ $tossCheck -eq 1 ]
+	then
+		read -p "Choose the letter X or Y" playerSymbol
+		echo "Player choose $playerSymbol letter"
+		if (( $playerSymbol == $computerSymbol1 ))
+		then
+			computerSymbol=$computerSymbol2
+		else
+			computerSymbol=$computerSymbol1
+		fi
+		echo "computer Symbol is $computerSymbol"
+
+	elif [ $tossCheck -eq 0 ]
+	then
+		letter=$((RANDOM%2))
+		if [ $letter -eq 1 ]
+		then
+			computerSymbol=$computerSymbol1
+		else
+			computerSymbol=$computerSymbol2
+		fi
+		echo "Computer choose $computerSymbol letter"
+	fi
+}
+chooseLetter
