@@ -54,10 +54,14 @@ function chooseLetter()
 		if [ $letter -eq 1 ]
 		then
 			computerSymbol=$computerSymbol1
+			playerSymbol=$computerSymbol2
 		else
 			computerSymbol=$computerSymbol2
+			playerSymbol=$computerSymbol1
 		fi
 		echo "Computer choose $computerSymbol letter"
+		echo "Player Symbol is $playerSymbol"
+
 	fi
 }
 chooseLetter
