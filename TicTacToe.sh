@@ -1,4 +1,3 @@
-#!/bin/bash -x
 echo "Welcome To TicTacToe"
 NUM_OF_CELLS=9
 computerSymbol1=X
@@ -111,8 +110,42 @@ function playerChooseCell()
 		fi
 	done
 }
+function computerChooseCell()
+{
+        cellOccupied=0
+        display
+        cell=0
+        while [ $cell -eq  0 ]
+        do
+                cell=$((RANDOM%9+1))
+                for ((i=1; i<=NUM_OF_CELLS; i++))
+                do
+                        if [ $cell -eq $i ]
+                        then
+                                if (( ${board[i]} == X || ${board[i]} == O ))
+                                then
+                                        ((cellOccupied++))
+                                else
+                                board[i]=$computerSymbol
+                                fi
+                        fi
+                done
+
+                if [ $cellOccupied -gt 0 ]
+                then
+                        echo "Cell alredy occupied please enter valid cell"
+                        cell=0
+                fi
+        done
+
+}
+
 if [ $tossCheck -eq 1 ]
 then
 	playerChooseCell
 	display
+elif [ $tossCheck -eq 0 ]
+then
+        computerChooseCell
+        display
 fi
