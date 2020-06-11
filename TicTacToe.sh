@@ -1,3 +1,4 @@
+#!/bin/bash -x
 echo "Welcome To TicTacToe"
 NUM_OF_CELLS=9
 computerSymbol1=X
@@ -12,9 +13,12 @@ function resetBoard()
          board[$i]=$i
    done
 echo "Board is display : "
-printf "|| ${board[1]} || ${board[2]} || ${board[3]} ||\n"
-printf "|| ${board[4]} || ${board[5]} || ${board[6]} ||\n"
-printf "|| ${board[7]} || ${board[8]} || ${board[9]} ||\n"
+echo "|| ${board[1]} || ${board[2]} || ${board[3]} ||"
+echo "-----------------"
+echo "|| ${board[4]} || ${board[5]} || ${board[6]} ||"
+echo "-----------------"
+
+echo "|| ${board[7]} || ${board[8]} || ${board[9]} ||"
 
 }
 
@@ -38,7 +42,7 @@ function chooseLetter()
 	toss
 	if [ $tossCheck -eq 1 ]
 	then
-		read -p "Choose the letter X or Y" playerSymbol
+		read -p "Choose the letter X or O" playerSymbol
 		echo "Player choose $playerSymbol letter"
 		if (( $playerSymbol == $computerSymbol1 ))
 		then
@@ -65,3 +69,50 @@ function chooseLetter()
 	fi
 }
 chooseLetter
+
+function display()
+{
+	echo "Board is display : "
+echo "|| ${board[1]} || ${board[2]} || ${board[3]} ||"
+echo "-----------------"
+echo "|| ${board[4]} || ${board[5]} || ${board[6]} ||"
+echo "-----------------"
+
+echo "|| ${board[7]} || ${board[8]} || ${board[9]} ||"
+
+
+}
+
+function playerChooseCell()
+{
+	cellOccupied=0
+	display
+	cell=0
+	while [ $cell -eq  0 ]
+	do
+		read -p "Enter the cell number " cell
+		for ((i=1; i<=NUM_OF_CELLS; i++))
+	        do
+			if [ $cell -eq $i ]
+			then
+				if (( ${board[i]} == X || ${board[i]} == O ))
+				then
+					((cellOccupied++))
+				else
+				board[i]=$playerSymbol
+				fi
+			fi
+		done
+
+		if [ $cellOccupied -gt 0 ]
+		then
+			echo "Cell alredy occupied please enter valid cell"
+			cell=0
+		fi
+	done
+}
+if [ $tossCheck -eq 1 ]
+then
+	playerChooseCell
+	display
+fi
