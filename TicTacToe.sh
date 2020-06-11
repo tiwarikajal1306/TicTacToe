@@ -2,7 +2,7 @@ echo "Welcome To TicTacToe"
 NUM_OF_CELLS=9
 computerSymbol1=X
 computerSymbol2=O
-#variables
+
 declare -a board
 
 function resetBoard()
@@ -11,17 +11,9 @@ function resetBoard()
    do
          board[$i]=$i
    done
-echo "Board is display : "
-echo "|| ${board[1]} || ${board[2]} || ${board[3]} ||"
-echo "-----------------"
-echo "|| ${board[4]} || ${board[5]} || ${board[6]} ||"
-echo "-----------------"
-
-echo "|| ${board[7]} || ${board[8]} || ${board[9]} ||"
-
+	display
 }
 
-resetBoard
 
 function toss()
 {
@@ -67,7 +59,6 @@ function chooseLetter()
 
         fi
 }
-chooseLetter
 
 function display()
 {
@@ -133,7 +124,6 @@ function computerChooseCell()
 
                 if [ $cellOccupied -gt 0 ]
                 then
-                        echo "Cell alredy occupied please enter valid cell"
                         cell=0
                 fi
         done
@@ -144,7 +134,6 @@ function computerChooseCell()
 
 function winner()
 {
-	finalWinner=1
 	winnerSymbol=$symbol
 }
 
@@ -187,12 +176,13 @@ function winnerCheck()
                winnerSymbol=T
 
         fi
-	flag=1
 }
+resetBoard
+chooseLetter
 winnerSymbol=5
 
 chanceCount=1
-while [[ winnerSymbol -eq 5 && chanceCount -lt 10 ]]
+while [[ $winnerSymbol -eq 5 && chanceCount -lt 10 ]]
 do
 if [ $tossCheck -eq 1 ]
 then
