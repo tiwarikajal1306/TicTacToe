@@ -2,8 +2,8 @@ echo "Welcome To TicTacToe"
 NUM_OF_CELLS=9
 computerSymbol1=X
 computerSymbol2=O
-computerSymbol=a
-playerSymbol=b
+computerSymbol=a;
+playerSymbol=b;
 
 declare -a board
 
@@ -135,7 +135,7 @@ function computerChooseCell()
                                 if (( $winnerSymbol == $playerSymbol ))
                                 then
 					board[i]=$computerSymbol
-                                        winnerSymbol=5
+                                        winnerSymbol=5;
                                         i=11
                                         ((move++))
 
