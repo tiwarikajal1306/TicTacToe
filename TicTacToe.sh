@@ -114,7 +114,9 @@ function playerChooseCell()
 }
 function computerChooseCell()
 {
-        move=0
+	move=0
+#place computer Symbol to win if possible
+
 	for (( cellCheck=1; cellCheck<=NUM_OF_CELLS; cellCheck++ ))
         do
 
@@ -125,20 +127,20 @@ function computerChooseCell()
                                 if (( ${board[i]} != X && ${board[i]} != O ))
                                 then
 					canComputerWin
-				if (( $winnerSymbol == $computerSymbol ))
-				then
-					winnerSymbol=5
-					cellCheck=11
-					i=11
-					((move++))
-				
-                                else
-                                board[i]=$i
-                                fi
+					if (( $winnerSymbol == $computerSymbol ))
+					then
+						winnerSymbol=5
+						cellCheck=11
+						i=11
+						((move++))
+	                                else
+	                                	board[i]=$i
+	                                fi
 				fi
                         fi
                 done
 	done
+#place computer Symbol to block player win if possible
 	if [ $move -eq 0 ]
 	then
 		for (( cellCheck=1; cellCheck<=NUM_OF_CELLS; cellCheck++ ))
@@ -167,13 +169,51 @@ function computerChooseCell()
                 done
         done
 	fi
-	
-                if [ $move -eq 0 ]
-                then
-			 cell=0
+#place computer Symbol on the available corners"
+	if [ $move -eq 0 ]
+	then
+		for(( cell =1; cell<=NUM_OF_CELLS; cell++))
+		do
+			if (( ${board[cell]} != X && ${board[cell]} != O ))
+			then
+				case $cell in
 
-        		 while [ $cell -eq  0 ]
-        		 do
+					1)
+						board[cell]=$computerSymbol
+						((move++))
+						break
+					;;
+
+					3)
+						board[cell]=$computerSymbol
+                                                ((move++))
+                                                break
+                                        ;;
+
+					7)
+                                                board[cell]=$computerSymbol
+                                                ((move++))
+                                                break
+                                        ;;
+
+					9)
+                                                board[cell]=$computerSymbol
+                                                ((move++))
+                                                break
+                                        ;;
+
+					*)
+					;;
+				esac
+			fi
+		done
+	fi
+        if [ $move -eq 0 ]
+        then
+		cell=0
+
+        	while [ $cell -eq  0 ]
+        	do
 		 		cellOccupied=0
 
 		                cell=$((RANDOM%9+1))
@@ -194,7 +234,7 @@ function computerChooseCell()
 		                if [ $cellOccupied -gt 0 ]
 		                then
 		                        cell=0
-		                fi
+	                fi
 		        done
 		fi
 
