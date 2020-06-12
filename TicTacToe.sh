@@ -9,21 +9,12 @@ declare -a board
 
 function resetBoard()
 {
-   for ((i=1; i<=NUM_OF_CELLS; i++))
-   do
-         board[$i]=$i
-   done
-echo "Board is display : "
-echo "|| ${board[1]} || ${board[2]} || ${board[3]} ||"
-echo "-----------------"
-echo "|| ${board[4]} || ${board[5]} || ${board[6]} ||"
-echo "-----------------"
-
-echo "|| ${board[7]} || ${board[8]} || ${board[9]} ||"
-
+	for ((i=1; i<=NUM_OF_CELLS; i++))
+	do
+		board[$i]=$i
+	done
+	display
 }
-
-resetBoard
 
 function toss()
 {
@@ -69,17 +60,16 @@ function chooseLetter()
 
         fi
 }
-chooseLetter
 
 function display()
 {
         echo "Board is display : "
-echo "|| ${board[1]} || ${board[2]} || ${board[3]} ||"
-echo "-----------------"
-echo "|| ${board[4]} || ${board[5]} || ${board[6]} ||"
-echo "-----------------"
+	echo "|| ${board[1]} || ${board[2]} || ${board[3]} ||"
+	echo "-----------------"
+	echo "|| ${board[4]} || ${board[5]} || ${board[6]} ||"
+	echo "-----------------"
 
-echo "|| ${board[7]} || ${board[8]} || ${board[9]} ||"
+	echo "|| ${board[7]} || ${board[8]} || ${board[9]} ||"
 
 
 }
@@ -90,7 +80,7 @@ function playerChooseCell()
         while [ $cell -eq  0 ]
         do
                 read -p "Enter the cell number " cell
-		 cellOccupied=0
+		cellOccupied=0
 
                 for ((i=1; i<=NUM_OF_CELLS; i++))
                 do
@@ -117,57 +107,43 @@ function computerChooseCell()
 	move=0
 #place computer Symbol to win if possible
 
-	for (( cellCheck=1; cellCheck<=NUM_OF_CELLS; cellCheck++ ))
-        do
+	for ((i=1; i<=NUM_OF_CELLS; i++))
+	do
+		if (( ${board[i]} != X && ${board[i]} != O ))
+		then
+			canComputerWin
+			if (( $winnerSymbol == $computerSymbol ))
+			then
+				winnerSymbol=5
+				i=11
+				((move++))
+	                else
 
-                for ((i=1; i<=NUM_OF_CELLS; i++))
-                do
-                        if [ $cellCheck -eq $i ]
-                        then
-                                if (( ${board[i]} != X && ${board[i]} != O ))
-                                then
-					canComputerWin
-					if (( $winnerSymbol == $computerSymbol ))
-					then
-						winnerSymbol=5
-						cellCheck=11
-						i=11
-						((move++))
-	                                else
-	                                	board[i]=$i
-	                                fi
-				fi
-                        fi
-                done
+	                        board[i]=$i
+	                fi
+		fi
 	done
 #place computer Symbol to block player win if possible
 	if [ $move -eq 0 ]
 	then
-		for (( cellCheck=1; cellCheck<=NUM_OF_CELLS; cellCheck++ ))
-        	do
 
                 for ((i=1; i<=NUM_OF_CELLS; i++))
                 do
-                        if [ $cellCheck -eq $i ]
+                	if (( ${board[i]} != X && ${board[i]} != O ))
                         then
-                                if (( ${board[i]} != X && ${board[i]} != O ))
-                                then
-                                        canPlayerWin
+                        	canPlayerWin
                                 if (( $winnerSymbol == $playerSymbol ))
                                 then
-					board[cellCheck]=$computerSymbol
+					board[i]=$computerSymbol
                                         winnerSymbol=5
-                                        cellCheck=11
                                         i=11
                                         ((move++))
 
                                 else
-                                board[i]=$i
+                                	board[i]=$i
                                 fi
-                                fi
-                        fi
+                         fi
                 done
-        done
 	fi
 #place computer Symbol on the available corners"
 	if [ $move -eq 0 ]
@@ -217,6 +193,7 @@ function computerChooseCell()
 		((move++))
 	fi
 
+#Random place for computer Symball
 
         if [ $move -eq 0 ]
         then
@@ -224,29 +201,23 @@ function computerChooseCell()
 
         	while [ $cell -eq  0 ]
         	do
-		 		cellOccupied=0
-
-		                cell=$((RANDOM%9+1))
-		                for ((i=1; i<=NUM_OF_CELLS; i++))
-		                do
-		                        if [ $cell -eq $i ]
-		                        then
-		                                if (( ${board[i]} != X && ${board[i]} != O ))
-		                                then
-							board[i]=$computerSymbol
-							i=10
-		                                else
-							cell=0
-		                                fi
-		                        fi
-		                done
-
-		                if [ $cellOccupied -gt 0 ]
+		        cell=$((RANDOM%9+1))
+		        for ((i=1; i<=NUM_OF_CELLS; i++))
+		        do
+		        	if [ $cell -eq $i ]
 		                then
-		                        cell=0
-	                fi
-		        done
-		fi
+		                	if (( ${board[i]} != X && ${board[i]} != O ))
+		                        then
+						board[i]=$computerSymbol
+						i=10
+		                        else
+						cell=0
+		                        fi
+		                fi
+			done
+
+		done
+	fi
 
 }
 
@@ -301,19 +272,20 @@ function winnerCheck()
 
 function canComputerWin()
 {
-	board[cellCheck]=$computerSymbol
+	board[i]=$computerSymbol
 	winnerCheck $computerSymbol
 }
 
 
 function canPlayerWin()
 {
-	board[cellCheck]=$playerSymbol
+	board[i]=$playerSymbol
 	winnerCheck $playerSymbol
 
 }
 winnerSymbol=5
-
+resetBoard
+chooseLetter
 chanceCount=1
 while [[ winnerSymbol -eq 5 && chanceCount -lt 10 ]]
 do
@@ -325,10 +297,10 @@ then
 	((chanceCount++))
 	if [[ $winnerSymbol != $playerSymbol && chanceCount -lt 10 ]]
 	then
-        computerChooseCell
-        display
-        winnerCheck $computerSymbol
-       	((chanceCount++))
+        	computerChooseCell
+        	display
+        	winnerCheck $computerSymbol
+       		((chanceCount++))
 	fi
 else
 	computerChooseCell
