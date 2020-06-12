@@ -208,6 +208,16 @@ function computerChooseCell()
 			fi
 		done
 	fi
+
+#place computer Symbol at center
+
+	if [[ $move -eq 0 && ${board[i]} != X && ${board[i]} != O ]]
+  	then
+		board[5]=$computerSymbol
+		((move++))
+	fi
+
+
         if [ $move -eq 0 ]
         then
 		cell=0
