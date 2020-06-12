@@ -139,7 +139,35 @@ function computerChooseCell()
                         fi
                 done
 	done
+	if [ $move -eq 0 ]
+	then
+		for (( cellCheck=1; cellCheck<=NUM_OF_CELLS; cellCheck++ ))
+        	do
 
+                for ((i=1; i<=NUM_OF_CELLS; i++))
+                do
+                        if [ $cellCheck -eq $i ]
+                        then
+                                if (( ${board[i]} != X && ${board[i]} != O ))
+                                then
+                                        canPlayerWin
+                                if (( $winnerSymbol == $playerSymbol ))
+                                then
+					board[cellCheck]=$computerSymbol
+                                        winnerSymbol=5
+                                        cellCheck=11
+                                        i=11
+                                        ((move++))
+
+                                else
+                                board[i]=$i
+                                fi
+                                fi
+                        fi
+                done
+        done
+	fi
+	
                 if [ $move -eq 0 ]
                 then
 			 cell=0
@@ -227,6 +255,13 @@ function canComputerWin()
 	winnerCheck $computerSymbol
 }
 
+
+function canPlayerWin()
+{
+	board[cellCheck]=$playerSymbol
+	winnerCheck $playerSymbol
+
+}
 winnerSymbol=5
 
 chanceCount=1
