@@ -2,7 +2,9 @@ echo "Welcome To TicTacToe"
 NUM_OF_CELLS=9
 computerSymbol1=X
 computerSymbol2=O
-#variables
+computerSymbol=a
+playerSymbol=b
+
 declare -a board
 
 function resetBoard()
@@ -112,31 +114,61 @@ function playerChooseCell()
 }
 function computerChooseCell()
 {
-        cell=0
-        while [ $cell -eq  0 ]
+        move=0
+	for (( cellCheck=1; cellCheck<=NUM_OF_CELLS; cellCheck++ ))
         do
-		 cellOccupied=0
 
-                cell=$((RANDOM%9+1))
                 for ((i=1; i<=NUM_OF_CELLS; i++))
                 do
-                        if [ $cell -eq $i ]
+                        if [ $cellCheck -eq $i ]
                         then
-                                if (( ${board[i]} == X || ${board[i]} == O ))
+                                if (( ${board[i]} != X && ${board[i]} != O ))
                                 then
-                                        ((cellOccupied++))
+					canComputerWin
+				if (( $winnerSymbol == $computerSymbol ))
+				then
+					winnerSymbol=5
+					cellCheck=11
+					i=11
+					((move++))
+				
                                 else
-                                board[i]=$computerSymbol
+                                board[i]=$i
                                 fi
+				fi
                         fi
                 done
+	done
 
-                if [ $cellOccupied -gt 0 ]
+                if [ $move -eq 0 ]
                 then
-                        echo "Cell alredy occupied please enter valid cell"
-                        cell=0
-                fi
-        done
+			 cell=0
+
+        		 while [ $cell -eq  0 ]
+        		 do
+		 		cellOccupied=0
+
+		                cell=$((RANDOM%9+1))
+		                for ((i=1; i<=NUM_OF_CELLS; i++))
+		                do
+		                        if [ $cell -eq $i ]
+		                        then
+		                                if (( ${board[i]} != X && ${board[i]} != O ))
+		                                then
+							board[i]=$computerSymbol
+							i=10
+		                                else
+							cell=0
+		                                fi
+		                        fi
+		                done
+
+		                if [ $cellOccupied -gt 0 ]
+		                then
+		                        cell=0
+		                fi
+		        done
+		fi
 
 }
 
@@ -144,8 +176,8 @@ function computerChooseCell()
 
 function winner()
 {
-	finalWinner=1
 	winnerSymbol=$symbol
+
 }
 
 function winnerCheck()
@@ -187,8 +219,14 @@ function winnerCheck()
                winnerSymbol=T
 
         fi
-	flag=1
 }
+
+function canComputerWin()
+{
+	board[cellCheck]=$computerSymbol
+	winnerCheck $computerSymbol
+}
+
 winnerSymbol=5
 
 chanceCount=1
